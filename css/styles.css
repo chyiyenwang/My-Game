@@ -1,0 +1,8 @@
+canvas {
+/*	height: 700;
+	width: 1200;*/
+	left: 100px;
+	top: 50px;
+	border: 2px solid black;
+	position: absolute;
+}
