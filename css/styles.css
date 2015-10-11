@@ -1,8 +1,16 @@
 canvas {
-	left: 100px;
-	top: 50px;
+	left: 350px;
+	top: 200px;
 	border: 2px solid black;
 	border-right: 2px dotted black;
 	border-left: 2px dotted black;
+	position: absolute;
+}
+
+div {
+	width: 20px;
+	height: 100px;
+	border: 2px solid black;
+	top: 50px;
 	position: absolute;
 }
