@@ -6,11 +6,3 @@ canvas {
 	border-left: 2px dotted black;
 	position: absolute;
 }
-
-div {
-	width: 20px;
-	height: 100px;
-	border: 2px solid black;
-	top: 50px;
-	position: absolute;
-}
