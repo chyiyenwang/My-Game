@@ -62,6 +62,10 @@ $(document).ready(function() {
 	  	pingPong.vx = pingPong.vx * -1;
 	  	pingPong.x += pingPong.vx;
 	  }
+	  else if (pingPong.x >= (right.x) && pingPong.x <= (right.x + 4) && pingPong.y < (right.y + right.height) && pingPong.y > right.y) {;
+	  	pingPong.vx = pingPong.vx * -1;
+	  	pingPong.x += pingPong.vx;
+	  }
 	  else if (pingPong.x < -20) {
 	  	scorer = 'Right';
 	  	rightWins++;
