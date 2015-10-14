@@ -73,8 +73,8 @@ $(document).ready(function() {
 	  	if (rightWins == 5) {
 	  		swal({   
 	  			title: "Congrats!",   
-	  			text: "Right Player Wins!",   
-	  			imageUrl: "images/you-win.jpg" });
+	  			text: "Green Player Wins!",   
+	  			imageUrl: "images/right-wins.gif" });
 	  		// alert('Right Player Wins!');
 	  	}
 	  	return;
@@ -86,8 +86,8 @@ $(document).ready(function() {
 	  	if (leftWins == 5) {
 				swal({   
 	  			title: "Congrats!",   
-	  			text: "Left Player Wins!",   
-	  			imageUrl: "images/you-win.jpg" });	  	
+	  			text: "Red Player Wins!",   
+	  			imageUrl: "images/left-wins.gif" });	  	
 			}
 	  	return;
 	  }
@@ -104,7 +104,7 @@ $(document).ready(function() {
 		$('#right-score').html(0);
 		left = new Paddle(10, 225, 20, 150, 'red');
 		right = new Paddle(970, 225, 20, 150, 'green')
-		pingPong = new Ball(500, 300, -6, -6, 15, 'rgba(0,0,0,1)');
+		pingPong = new Ball(500, 300, -6, -6, 15, 'black');
 		rightWins = 0;
 		leftWins = 0;
 		left.draw();
@@ -115,7 +115,7 @@ $(document).ready(function() {
 	var serve = function() {
 		left = new Paddle(10, 225, 20, 150, 'red');
 		right = new Paddle(970, 225, 20, 150, 'green')
-		pingPong = new Ball(500, 300, -6, -6, 15, 'rgba(0,0,0,1)');
+		pingPong = new Ball(500, 300, -6, -6, 15, 'black');
 		left.draw();
 		right.draw();
 		ballMovement();
