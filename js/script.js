@@ -94,30 +94,41 @@ $(document).ready(function() {
 	var pingPong;
 	// This creates the paddles and the ball with their
 	// respective attributes
-	var init = function() {
+	var begin = function() {
+		left = new Paddle(10, 225, 20, 150, 'red');
+		right = new Paddle(970, 225, 20, 150, 'green')
+		pingPong = new Ball(500, 300, -6, -6, 15, 'rgba(0,0,0,1)');
+		rightWins = 0;
+		leftWins = 0;
+		left.draw();
+		right.draw();
+		ballMovement();
+	};
+
+	var serve = function() {
 		left = new Paddle(10, 225, 20, 150, 'red');
 		right = new Paddle(970, 225, 20, 150, 'green')
 		pingPong = new Ball(500, 300, -6, -6, 15, 'rgba(0,0,0,1)');
 		left.draw();
 		right.draw();
 		ballMovement();
-	};
+	}
 
-	// Currently this function only moves the left paddle down.  Fix this shit up, bitch!
+	// Currently this function only moves the left paddle down.  Fix this rightPaddleDown up, bitch!
 	var paddleMovementDown = function() {
 		ctx.clearRect(0, 0, 30, canvas.height);
 		left.draw();
 		if (left.y < canvas.height-150) left.y += 10;
-		console.log(left.y);
+		// console.log(left.y);
 		raf(paddleMovementDown);
 	}
 
 	// right paddele down
-	var shit = function() {
+	var rightPaddleDown = function() {
 		ctx.clearRect(970, 0, 30, canvas.height);
 		right.draw();
-		right.y += 10
-		raf(shit);
+		if (right.y < canvas.height-150) right.y += 10
+		raf(rightPaddleDown);
 	}
 
 	var paddleMovementUp = function() {
@@ -127,8 +138,15 @@ $(document).ready(function() {
 		raf(paddleMovementUp);
 	}
 
+	var rightPaddleUp = function() {
+		ctx.clearRect(970, 0, 30, canvas.height);
+		right.draw();
+		if (right.y > 0) right.y -= 10
+		raf(rightPaddleUp);	
+	}
+
 	// Currently this function only stops the left paddle from moving down
-	var stopMovement = function() {
+	var stopMovementLeft = function() {
 		ctx.clearRect(0, 0, 30, canvas.height);
 		left.draw();
 		left.y -= 10;
@@ -137,6 +155,8 @@ $(document).ready(function() {
 
 	var animUp = null;
 	var animDown = null;
+	var rightAnimUp = null;
+	var rightAnimDown = null;
 	// Keydown function that calls paddleMovement()
 	addE('keydown', function(e) {
 		if (e.keyCode == 87 && !animUp) { 
@@ -145,8 +165,11 @@ $(document).ready(function() {
 		if (e.keyCode == 83 && !animDown) { 
 				animDown = raf(paddleMovementDown);
 			}
-		if (e.keyCode == 40) {
-			shit();
+		if (e.keyCode == 38 && !rightAnimUp) {
+			rightAnimUp = raf(rightPaddleUp);
+		}
+		if (e.keyCode == 40 && !rightAnimDown) {
+			rightAnimDown = raf(rightPaddleDown);
 		}
 	});
 
@@ -159,16 +182,31 @@ $(document).ready(function() {
 		}
 		if (e.keyCode == 83) {
 			// stopMovement();
-			console.log('keyup');
 			// window.webkitCancelRequestAnimationFrame(animDown);
 			animDown = null;
+		}
+		if (e.keyCode == 38) {
+			// stopMovement();
+			// window.webkitCancelRequestAnimationFrame(animUp);
+			rightAnimUp = null;
+		}
+		if (e.keyCode == 40) {
+			// stopMovement();
+			// window.webkitCancelRequestAnimationFrame(animDown);
+			rightAnimDown = null;
 		}
 	})
 
 	// start button
-	$('button').on('click', function() {
-		init();
+	$('#start').on('click', function() {
+		begin();
 	});
+
+	$('#serve').on('click', function() {
+		if (leftWins > 0 || rightWins > 0) {
+			serve();
+		}
+	})
 
 	// // addE('keydown', function(e) {
 	// // 	if (e.keyCode == 87) {
