@@ -21,3 +21,44 @@ canvas {
 button {
 	text-align: center;
 }
+
+.score {
+	color: white;
+	font-family: 'Indie Flower', cursive;
+	font-weight: bold;
+	font-size: 90px;
+	text-align: center;
+	line-height: 1.5;
+}
+
+#left-score {
+	position: absolute;
+	width: 118px;
+	height: 147px;
+	left: 400px;
+	top: 25px;
+	background-image: url('/Users/chyiwang/wdi_04/My-Game/images/chalkboard.jpg');
+	background-size: 118px 147px;
+	background-image: no-repeat;
+}
+
+#right-score {
+	position: absolute;
+	width: 118px;
+	height: 147px;
+	left: 1180px;
+	top: 25px;
+	background-image: url('/Users/chyiwang/wdi_04/My-Game/images/chalkboard.jpg');
+	background-size: 118px 147px;
+	background-image: no-repeat;
+}
+
+#start {
+	position: absolute;
+	left: 600px;
+}
+
+fieldset {
+	display: none;
+}
+

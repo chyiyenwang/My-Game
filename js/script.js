@@ -67,29 +67,30 @@ $(document).ready(function() {
 	  	pingPong.x += pingPong.vx;
 	  }
 	  else if (pingPong.x < -20) {
-	  	scorer = 'Right';
 	  	rightWins++;
 	  	console.log(rightWins);
+	  	$('#right-score').html(rightWins);
 	  	if (rightWins == 5) {
-	  		alert('Right Player Wins!');
+	  		swal({   
+	  			title: "Congrats!",   
+	  			text: "Right Player Wins!",   
+	  			imageUrl: "images/you-win.jpg" });
+	  		// alert('Right Player Wins!');
 	  	}
 	  	return;
 	  }
 	  else if (pingPong.x > canvas.width) {
-	  	scorer = 'Left';
 	  	leftWins++;
 	  	console.log(leftWins);
+	  	$('#left-score').html(leftWins);
 	  	if (leftWins == 5) {
-	  		alert('Left Player Wins!');
-	  	}
+				swal({   
+	  			title: "Congrats!",   
+	  			text: "Left Player Wins!",   
+	  			imageUrl: "images/you-win.jpg" });	  	
+			}
 	  	return;
 	  }
-	  // else if(pingPong.x < )
-	  // left || right
-	  // else if (pingPong.x <= (left.x + 30) || pingPong.x >= (canvas.width - 34)) {
-	  // 	pingPong.vx = pingPong.vx * -1;
-	  // 	pingPong.x += pingPong.vx;
-	  // }
 	  raf(ballMovement);
 	};
 
@@ -99,6 +100,8 @@ $(document).ready(function() {
 	// This creates the paddles and the ball with their
 	// respective attributes
 	var begin = function() {
+		$('#left-score').html(0);
+		$('#right-score').html(0);
 		left = new Paddle(10, 225, 20, 150, 'red');
 		right = new Paddle(970, 225, 20, 150, 'green')
 		pingPong = new Ball(500, 300, -6, -6, 15, 'rgba(0,0,0,1)');
@@ -164,10 +167,12 @@ $(document).ready(function() {
 	// Keydown function that calls paddleMovement()
 	addE('keydown', function(e) {
 		if (e.keyCode == 87 && !animUp) { 
-				animUp = raf(paddleMovementUp);
+				paddleMovementUp();
+				animeUp = 'pressed'
 			}
 		if (e.keyCode == 83 && !animDown) { 
-				animDown = raf(paddleMovementDown);
+				paddleMovementDown();
+				animeDown = 'pressed'
 			}
 		if (e.keyCode == 38 && !rightAnimUp) {
 			rightAnimUp = raf(rightPaddleUp);
@@ -180,7 +185,7 @@ $(document).ready(function() {
 	// // Keyup function that calls stopMovement();
 	addE('keyup', function(e) {
 		if (e.keyCode == 87) {
-			// stopMovement();
+			stopMovementLeft();
 			// window.webkitCancelRequestAnimationFrame(animUp);
 			animUp = null;
 		}
@@ -207,8 +212,14 @@ $(document).ready(function() {
 	});
 
 	$('#serve').on('click', function() {
-		if (leftWins > 0 || rightWins > 0) {
+		if (rightWins > 0 && rightWins < 5) {
 			serve();
+		}
+		else if (leftWins > 0 && leftWins < 5) {
+			serve();
+		}
+		else {
+			swal("Start A New Game")
 		}
 	})
 
