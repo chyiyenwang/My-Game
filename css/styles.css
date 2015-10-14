@@ -1,3 +1,13 @@
+body {
+	background-image: url('/Users/chyiwang/wdi_04/My-Game/images/hardwood-floor-background.jpg');
+}
+
+h1 {
+	color: white;
+	left: 800px;
+	position: absolute;
+}
+
 canvas {
 	left: 350px;
 	top: 200px;
@@ -5,4 +15,9 @@ canvas {
 	border-right: 2px dotted black;
 	border-left: 2px dotted black;
 	position: absolute;
+	background-image: url('/Users/chyiwang/wdi_04/My-Game/images/table.png');
+}
+
+button {
+	text-align: center;
 }
