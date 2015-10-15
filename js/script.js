@@ -102,9 +102,9 @@ $(document).ready(function() {
 	var begin = function() {
 		$('#left-score').html(0);
 		$('#right-score').html(0);
-		left = new Paddle(10, 225, 20, 150, 'red');
+		left = new Paddle(10, 225, 20, 150, 'rgba(255,0,0,2)');
 		right = new Paddle(970, 225, 20, 150, 'green')
-		pingPong = new Ball(500, 300, -6, -6, 15, 'black');
+		pingPong = new Ball(500, 300, -6, -6, 15, 'rgba(255,255,255,1)');
 		rightWins = 0;
 		leftWins = 0;
 		left.draw();
@@ -115,7 +115,7 @@ $(document).ready(function() {
 	var serve = function() {
 		left = new Paddle(10, 225, 20, 150, 'red');
 		right = new Paddle(970, 225, 20, 150, 'green')
-		pingPong = new Ball(500, 300, -6, -6, 15, 'black');
+		pingPong = new Ball(500, 300, -6, -6, 15, 'rgba(0,0,0,1)');
 		left.draw();
 		right.draw();
 		ballMovement();
@@ -125,31 +125,42 @@ $(document).ready(function() {
 	var paddleMovementDown = function() {
 		ctx.clearRect(0, 0, 30, canvas.height);
 		left.draw();
-		if (left.y < canvas.height-150) left.y += 10;
+		if (left.y < canvas.height-150 && stopl!=0)
+			{ left.y += 10;
 		// console.log(left.y);
-		raf(paddleMovementDown);
+			raf(paddleMovementDown);
+		}
+
 	}
 
 	// right paddele down
 	var rightPaddleDown = function() {
 		ctx.clearRect(970, 0, 30, canvas.height);
 		right.draw();
-		if (right.y < canvas.height-150) right.y += 10
-		raf(rightPaddleDown);
+		if (right.y < canvas.height-150 && stopr!=0) {
+			right.y += 10;
+			raf(rightPaddleDown);
+		};
+		
 	}
 
 	var paddleMovementUp = function() {
+		console.log(stop);
 		ctx.clearRect(0, 0, 30, canvas.height);
 		left.draw();
-		if (left.y > 0) left.y -= 10;
-		raf(paddleMovementUp);
+		if (left.y > 0 && stopl!=0) { 
+			left.y -= 10;
+		 	raf(paddleMovementUp);
+		}
 	}
 
 	var rightPaddleUp = function() {
 		ctx.clearRect(970, 0, 30, canvas.height);
 		right.draw();
-		if (right.y > 0) right.y -= 10
-		raf(rightPaddleUp);	
+		if (right.y > 0 && stopr !=0) { 
+			right.y -= 10;
+			raf(rightPaddleUp);	
+		}
 	}
 
 	// Currently this function only stops the left paddle from moving down
@@ -164,10 +175,15 @@ $(document).ready(function() {
 	var animDown = null;
 	var rightAnimUp = null;
 	var rightAnimDown = null;
+	var stopl=1;
+	var stopr=1
 	// Keydown function that calls paddleMovement()
 	addE('keydown', function(e) {
+		stopl=1;
+		stopr=1;
 		if (e.keyCode == 87 && !animUp) { 
-				paddleMovementUp();
+				console.log('keydown');
+				 paddleMovementUp();
 				animeUp = 'pressed'
 			}
 		if (e.keyCode == 83 && !animDown) { 
@@ -175,31 +191,40 @@ $(document).ready(function() {
 				animeDown = 'pressed'
 			}
 		if (e.keyCode == 38 && !rightAnimUp) {
-			rightAnimUp = raf(rightPaddleUp);
+			rightPaddleUp();
 		}
 		if (e.keyCode == 40 && !rightAnimDown) {
-			rightAnimDown = raf(rightPaddleDown);
+			rightPaddleDown();
 		}
+
 	});
+
 
 	// // Keyup function that calls stopMovement();
 	addE('keyup', function(e) {
+		//stop=0;
 		if (e.keyCode == 87) {
+			stopl=0;
 			stopMovementLeft();
+				console.log(stop);
+
 			// window.webkitCancelRequestAnimationFrame(animUp);
 			animUp = null;
 		}
 		if (e.keyCode == 83) {
+			stopl = 0;
 			// stopMovement();
 			// window.webkitCancelRequestAnimationFrame(animDown);
 			animDown = null;
 		}
 		if (e.keyCode == 38) {
+			stopr = 0;
 			// stopMovement();
 			// window.webkitCancelRequestAnimationFrame(animUp);
 			rightAnimUp = null;
 		}
 		if (e.keyCode == 40) {
+			stopr = 0;
 			// stopMovement();
 			// window.webkitCancelRequestAnimationFrame(animDown);
 			rightAnimDown = null;

@@ -7,6 +7,12 @@ h1 {
 	left: 800px;
 	position: absolute;
 }
+img{
+		opacity: .6;
+		position: absolute;
+		top:200px;
+		left: 380px;
+}
 
 canvas {
 	left: 350px;
@@ -14,8 +20,8 @@ canvas {
 	border: 2px solid black;
 	border-right: 2px dotted black;
 	border-left: 2px dotted black;
-	position: absolute;
 	background-image: url('/Users/chyiwang/wdi_04/My-Game/images/table.png');
+	position: absolute;
 }
 
 button {
@@ -24,11 +30,13 @@ button {
 
 .score {
 	color: white;
-	font-family: 'Indie Flower', cursive;
-	font-weight: bold;
+	/*font-family: 'Indie Flower', cursive;*/
+	/*font-family: 'Fredericka the Great', cursive;*/
+	font-family: 'Cabin Sketch', cursive;
+	/*font-weight: bold;*/
 	font-size: 90px;
 	text-align: center;
-	line-height: 1.5;
+	line-height: 1.7;
 }
 
 #left-score {
