@@ -13,8 +13,8 @@ $(document).ready(function() {
 	var rightAnimDown = null;
 	var stopl=1;
 	var stopr=1;
-	var audioRight = new Audio('../sounds/right-bounce.mp3');
-	var audioLeft = new Audio('../sounds/left-bounce.mp3');
+	var audioRight = new Audio('sounds/right-bounce.mp3');
+	var audioLeft = new Audio('sounds/left-bounce.mp3');
 
 	// Paddle constructor
 	var Paddle = function(x, y, width, height, color) {
