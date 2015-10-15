@@ -3,11 +3,13 @@ body {
 }
 
 h1 {
-	color: black;
+	color: white;
 	font-family: 'Exo 2', sans-serif;
-	left: 800px;
+	left: 740px;
+	top: -40px;
 	position: absolute;
-	font-size: 50px;
+	font-weight: bold;
+	font-size: 90px;
 }
 img{
 		opacity: .7;
@@ -16,7 +18,7 @@ img{
 		left: 380px;
 }
 
-canvas {
+#board {
 	left: 350px;
 	top: 200px;
 	border: 2px solid black;
@@ -65,7 +67,18 @@ button {
 
 #start {
 	position: absolute;
-	left: 600px;
+	left: 700px;
+	top: 150px;
+	height: 40px;
+	width: 80px;
+}
+
+#serve {
+	position: absolute;
+	left: 925px;
+	top: 150px;
+	height: 40px;
+	width: 80px;
 }
 
 fieldset {
