@@ -3,14 +3,16 @@ body {
 }
 
 h1 {
-	color: white;
+	color: black;
+	font-family: 'Exo 2', sans-serif;
 	left: 800px;
 	position: absolute;
+	font-size: 50px;
 }
 img{
-		opacity: .6;
+		opacity: .7;
 		position: absolute;
-		top:200px;
+		top:201px;
 		left: 380px;
 }
 

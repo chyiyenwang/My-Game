@@ -2,10 +2,20 @@ $(document).ready(function() {
 	var canvas = document.getElementById("board");
 	var ctx = canvas.getContext("2d");
 	var addE = document.addEventListener;
-	var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame
+	var raf = window.requestAnimationFrame || window.webkitRequestAnimationFrame;
+	var pingPong;
 	var scorer;
 	var leftWins = 0;
   var rightWins = 0;
+  var animUp = null;
+	var animDown = null;
+	var rightAnimUp = null;
+	var rightAnimDown = null;
+	var stopl=1;
+	var stopr=1;
+	var audioRight = new Audio('sounds/right-bounce.mp3');
+	var audioLeft = new Audio('sounds/left-bounce.mp3');
+
 
 	// Paddle constructor
 	var Paddle = function(x, y, width, height, color) {
@@ -37,11 +47,13 @@ $(document).ready(function() {
 	  }
 	};
 
+	// Trail effect for the ping pong
 	function trailEffect() {
 		ctx.fillStyle = 'rgba(30,78,152,0.3)';
     ctx.fillRect(30, 0, 940, canvas.height);
-	}
+	};
 
+	// Ball movement function; also checks for the collision for the paddes and keeps score
 	function ballMovement() {
 		var bottomWall = canvas.height - 5;
 		var topWall = 5;
@@ -55,17 +67,19 @@ $(document).ready(function() {
 	  	pingPong.vy = pingPong.vy * -1;
 	  	pingPong.y += pingPong.vy;
 	  }
-	  // google collision detection line intersection
-	  // this bounces ball currently but very poorly
 	  // Left front paddle && left back paddle && left paddle bottom point && left paddle top point
-	  else if (pingPong.x <= (left.x + 34) && pingPong.x >= (left.x + 30) && pingPong.y < (left.y + left.height) && pingPong.y > left.y) {;
+	  else if (pingPong.x <= (left.x + 34) && pingPong.x >= (left.x + 24) && pingPong.y < (left.y + left.height) && pingPong.y > left.y) {;
 	  	pingPong.vx = pingPong.vx * -1;
 	  	pingPong.x += pingPong.vx;
+	  	audioLeft.play();
 	  }
-	  else if (pingPong.x >= (right.x) && pingPong.x <= (right.x + 4) && pingPong.y < (right.y + right.height) && pingPong.y > right.y) {;
+	  // Right front && right back && right paddle bottom && right paddle top
+	  else if (pingPong.x >= (right.x - 14) && pingPong.x <= (right.x - 4) && pingPong.y < (right.y + right.height) && pingPong.y > right.y) {;
 	  	pingPong.vx = pingPong.vx * -1;
 	  	pingPong.x += pingPong.vx;
+	  	audioRight.play();
 	  }
+	  // Tally for the right player score
 	  else if (pingPong.x < -20) {
 	  	rightWins++;
 	  	console.log(rightWins);
@@ -75,10 +89,10 @@ $(document).ready(function() {
 	  			title: "Congrats!",   
 	  			text: "Green Player Wins!",   
 	  			imageUrl: "images/right-wins.gif" });
-	  		// alert('Right Player Wins!');
 	  	}
 	  	return;
 	  }
+	  // Tally for the left player score
 	  else if (pingPong.x > canvas.width) {
 	  	leftWins++;
 	  	console.log(leftWins);
@@ -94,17 +108,19 @@ $(document).ready(function() {
 	  raf(ballMovement);
 	};
 
-	var left;
-	var right;
-	var pingPong;
-	// This creates the paddles and the ball with their
-	// respective attributes
+	// Create paddles
+	var left = new Paddle(10, 225, 20, 150, 'rgba(200, 39, 27, 1)');
+	var right = new Paddle(970, 225, 20, 150, 'rgba(0, 115, 29, 1)');
+
+	// Begins the game and creates the ball 
 	var begin = function() {
+		randomVX = Math.random() < 0.5 ? -10 : 10;
+		randomVY = Math.random() * (6 - 7) + 6
+
 		$('#left-score').html(0);
 		$('#right-score').html(0);
-		left = new Paddle(10, 225, 20, 150, 'rgba(255,0,0,2)');
-		right = new Paddle(970, 225, 20, 150, 'green')
-		pingPong = new Ball(500, 300, -6, -6, 15, 'rgba(255,255,255,1)');
+
+		pingPong = new Ball(500, 300, randomVX, randomVY, 15, 'rgba(255,255,255, 1)');
 		rightWins = 0;
 		leftWins = 0;
 		left.draw();
@@ -113,47 +129,47 @@ $(document).ready(function() {
 	};
 
 	var serve = function() {
-		left = new Paddle(10, 225, 20, 150, 'red');
-		right = new Paddle(970, 225, 20, 150, 'green')
-		pingPong = new Ball(500, 300, -6, -6, 15, 'rgba(0,0,0,1)');
+		randomVX = Math.random() < 0.5 ? -10 : 10;
+		randomVY = Math.random() * (6 - 7) + 6
+
+		pingPong = new Ball(500, 300, randomVX, randomVY, 15, 'rgba(255,255,255, 1)');
 		left.draw();
 		right.draw();
 		ballMovement();
 	}
 
-	// Currently this function only moves the left paddle down.  Fix this rightPaddleDown up, bitch!
+	// Moves left paddle down
 	var paddleMovementDown = function() {
 		ctx.clearRect(0, 0, 30, canvas.height);
 		left.draw();
-		if (left.y < canvas.height-150 && stopl!=0)
-			{ left.y += 10;
-		// console.log(left.y);
+		if (left.y < canvas.height-150 && stopl != 0) { 
+			left.y += 10;
 			raf(paddleMovementDown);
 		}
-
 	}
 
-	// right paddele down
+	// Moves right paddele down
 	var rightPaddleDown = function() {
 		ctx.clearRect(970, 0, 30, canvas.height);
 		right.draw();
-		if (right.y < canvas.height-150 && stopr!=0) {
+		if (right.y < canvas.height-150 && stopr != 0) {
 			right.y += 10;
 			raf(rightPaddleDown);
 		};
-		
 	}
 
+	// Moves left paddle up
 	var paddleMovementUp = function() {
 		console.log(stop);
 		ctx.clearRect(0, 0, 30, canvas.height);
 		left.draw();
-		if (left.y > 0 && stopl!=0) { 
+		if (left.y > 0 && stopl != 0) { 
 			left.y -= 10;
 		 	raf(paddleMovementUp);
 		}
 	}
 
+	// Moves right paddle up
 	var rightPaddleUp = function() {
 		ctx.clearRect(970, 0, 30, canvas.height);
 		right.draw();
@@ -163,79 +179,63 @@ $(document).ready(function() {
 		}
 	}
 
-	// Currently this function only stops the left paddle from moving down
-	var stopMovementLeft = function() {
-		ctx.clearRect(0, 0, 30, canvas.height);
-		left.draw();
-		left.y -= 10;
-		// raf(stopMovement);
-	}
-
-	var animUp = null;
-	var animDown = null;
-	var rightAnimUp = null;
-	var rightAnimDown = null;
-	var stopl=1;
-	var stopr=1
 	// Keydown function that calls paddleMovement()
 	addE('keydown', function(e) {
 		stopl=1;
 		stopr=1;
+		// W
 		if (e.keyCode == 87 && !animUp) { 
-				console.log('keydown');
 				 paddleMovementUp();
-				animeUp = 'pressed'
+				animeUp = 'pressed';
 			}
+		// S
 		if (e.keyCode == 83 && !animDown) { 
 				paddleMovementDown();
-				animeDown = 'pressed'
+				animeDown = 'pressed';
 			}
+		// Up arrow
 		if (e.keyCode == 38 && !rightAnimUp) {
 			rightPaddleUp();
+			rightAnimUp = 'pressed';
 		}
+		// Down arrow
 		if (e.keyCode == 40 && !rightAnimDown) {
 			rightPaddleDown();
+			rightAnimDown = 'pressed';
 		}
-
 	});
 
 
-	// // Keyup function that calls stopMovement();
+	// // Keyup function that stops paddles from moving;
 	addE('keyup', function(e) {
-		//stop=0;
+		// W
 		if (e.keyCode == 87) {
 			stopl=0;
-			stopMovementLeft();
-				console.log(stop);
-
-			// window.webkitCancelRequestAnimationFrame(animUp);
 			animUp = null;
 		}
+		// S
 		if (e.keyCode == 83) {
 			stopl = 0;
-			// stopMovement();
-			// window.webkitCancelRequestAnimationFrame(animDown);
 			animDown = null;
 		}
+		// Up arrow
 		if (e.keyCode == 38) {
 			stopr = 0;
-			// stopMovement();
-			// window.webkitCancelRequestAnimationFrame(animUp);
 			rightAnimUp = null;
 		}
+		// Down arrow
 		if (e.keyCode == 40) {
 			stopr = 0;
-			// stopMovement();
-			// window.webkitCancelRequestAnimationFrame(animDown);
 			rightAnimDown = null;
 		}
-	})
+	});
 
 	// start button
 	$('#start').on('click', function() {
 		begin();
 	});
 
+	// serve button
 	$('#serve').on('click', function() {
 		if (rightWins > 0 && rightWins < 5) {
 			serve();
@@ -247,18 +247,4 @@ $(document).ready(function() {
 			swal("Start A New Game")
 		}
 	})
-
-	// // addE('keydown', function(e) {
-	// // 	if (e.keyCode == 87) {
-	// // 		ctx.clearRect(0, 0, 30, canvas.height);
-	// // 		left.y -= 24;
-	// // 		left.draw();
-	// // 	}
-	// // 	else if (e.keyCode == 83) {
-	// // 		ctx.clearRect(0, 0, 30, canvas.height);
-	// // 		left.y += 24;
-	// // 		left.draw();
-	// // 	} 
-	// // })
-
 });
