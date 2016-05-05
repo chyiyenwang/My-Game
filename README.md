@@ -8,7 +8,6 @@ A front end web app created using the HTML5 Canvas API.  This project was inspir
 * Javascript
 * CSS
 * HTML
-* Google Fonts
 
 ### How to play
 * Note: This game is best played with a minimum width of 1578px and minimum height of 852px
@@ -19,10 +18,10 @@ A front end web app created using the HTML5 Canvas API.  This project was inspir
  - Up Arrow: Up
  - Down Arrow: Down
 
-### Unsolved problems
+### TODO
 * The collision detection between the paddles and the ball could be better.  Currently, if the ball moves too fast and at certain angles the ball will go through the paddle.  
-* Another unsolved problem is when the ball goes past the paddles there is a streak that shows until the paddle moves to erase it.
-* Third, the serve button is not supposed to work after a player wins.
+* When the ball goes past the paddles there is a streak that shows until the paddle moves to erase it.
+* The serve button is not supposed to work after a player wins.
 
 ### Screenshots
 ![Home](https://github.com/chyiyenwang/My-Game/blob/master/screenshots/Home.png "Home screenshot")
